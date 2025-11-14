@@ -1,0 +1,208 @@
+Buenas noches estimados alumnos. La clase de hoy será totalmente práctica, ocuparemos los siguientes recursos:
+
+🚀App desplegada: https://practica-crud-academia.vercel.app/
+💻servidor: https://server-usuarios-qsdd.onrender.com/usuarios
+📑Form: https://tailwindflex.com/@lukas-muller/contact-us-page-template
+📊table: https://tailwindflex.com/@sophia-baker/table-with-progress-column
+🎨CSS: <script src="https://cdn.tailwindcss.com"></script> 
+🎨CSS: https://cssgradient.io/
+➰https://cssloaders.github.io/
+
+
+notas: 
+<!--! FORMULARIO -->
+<!--? https://tailwindflex.com/@lukas-muller/contact-us-page-template -->
+<!--TODO: Tenemos 5 inpus (Nombre, Edad, Aceptacion, Email, URL de la img), 2 radio (hombre || mujer), 2 buttons ✅ quitar textArea-->
+
+1. <form id="form">
+                               
+2. <input type="hidden" name="id" />
+
+3. INPUTS
+<!--TODO: placeholder="Nombre" name="nombre" id="nombre" -->
+<!--TODO: type="number" placeholder="Edad" name="edad" id="edad" -->
+<!--TODO:  type="number" placeholder="Indique % de Aceptacion" name="aceptacion" id="aceptacion" -->
+<!--TODO:  type="email" placeholder="Email" name="email" id="email"> -->
+<!--TODO:  type="text" placeholder="Url de la img" name="foto" id="foto" required -->        
+        
+4. <!--& AGREGAR ESTA DIV DE LOS RADIOS -->
+<div class="p-4">
+        <p class="text-lg font-semibold mb-2">Cual es tu genero</p>
+        <div class="flex items-center mb-4">
+            <input type="radio" id="mujer" name="genero" value="true" class="mr-2">
+            <label for="mujer">Mujer</label>
+        </div>
+
+        <div class="flex items-center mb-4">
+            <input type="radio" id="hombre" name="genero" value="false" class="mr-2">
+            <label for="hombre">Hombre</label>
+        </div>
+<!--? SON 2 inputs type=radio QUE TIENEN EL MISMO name="genero", sera nuestro selector para capturar su valor -->
+</div> 
+     
+5. <!--& LOS BOTONES -->
+<div class="flex justify-between">
+<!--TODO: Agregar id="btnSubmit" y cambiar el contendio: Enviar -->
+    <input
+        id="btnSubmit" 
+        value="Enviar ➤"...
+
+
+
+
+<!--! TABLA -->
+<!--? https://tailwindflex.com/@sophia-baker/table-with-progress-column -->
+<!--TODO: Poner las lables reales en <th de la <thead (Foto, Nombre, Edad, Genero, Email, Aceptación %, Acciones) -->
+ <!--TODO: vaciar el cuerpo de la tabla (Deja 1 de referencia) y id="userTable". -->
+    <!--TODO: Llenado Dinamico -->
+
+*************************************💻script.js:
+const URL_API = 'https://server-usuarios-qsdd.onrender.com/usuarios'
+
+
+     $tr.innerHTML = `
+        <td><img class='w-[80px] h-[80px] rounded-full' src="${user.foto}" alt="${user.nombre}" /></td>
+        <td class="px-4 py-2">${user.nombre}</td>
+        <td class="px-4 py-2">${user.edad}</td>
+        <td class="${colorGenero} px-4 py-2 text-center font-bold">${user.genero ? 'Mujer' : 'Hombre'}</td>
+        <td class="px-4 py-2">${user.email}</td>
+        <td class="px-4 py-2">
+          <div class="flex items-center">
+            <span class="mr-2 text-xs font-medium">${user.aceptacion}%</span>
+            <div class="w-full bg-gray-200 rounded-sm h-2">
+              <div class="${colorBarra} h-2 rounded-sm" style="width:${user.aceptacion}%"></div>
+            </div>
+          </div>
+        </td>
+        <td class="px-4 py-2">
+          <button class="bg-blue-500 text-white p-1 rounded mr-2 edit-btn" data-id="${user.id}">✏️ Editar</button>
+          <button class="bg-pink-500 text-white p-1 rounded delete-btn" data-id="${user.id}" data-nombre="${user.nombre}">🗑️ Eliminar</button>
+        </td>
+        `
+
+
+        indicaciones 19/06: Tenemos 4 botones, que son oyentes.
+
+        1. "Eliminar" de la tabla, que al "click" debe:
+          A. Preguntar si esta seguro de eliminar al usuario (identificarlo).
+          B. Si confirma, llamamos la funcion que lo elimina de la BBDD, con fetch(url/id, {method:'DELETE'})
+            Recuerda que al boton ya le pasamos el id como parametro, solo hay que concatenarlo con la URL.
+          C. llamar la funcion limpiarFormularioYactualizaTabla() ⌚👀
+          ⭐function deleteUser(id){}⭐ -> Manejadora del Btn
+
+       
+
+       
+       
+       
+        2. "Actualizar" de la tabla, que al "click" que debe:
+          A. Hacer fetch(url/id, {method:'GET'}), del usuario a actualizar. 
+          Recuerda que al boton ya le pasamos el id como parametro, solo hay que concatenarlo con la URL.
+          B. Iterar el OBJ-Usuario que viene de la BBDD, para recuperar cada campos/value y asignarlas 
+          al <input/value del <form para poblarlo. 
+          ⚠️ Debe coincidir: campo === input[name="AQUI!"] ⚠️, Para poder:
+            ✅capturar cada input, asi:     const $input = document.querySelector(`[name="${campo}"]`);
+            ✅para asignarle el value al $input correcto, asi: $input.value = value;
+          ⭐function editUser(id){}⭐ -> Manejadora del Btn
+          ❌Esta funcion NO hace la actualizacion en la BBDD.
+        
+        
+       
+       
+       
+       
+        3. "Enviar/Actualizar" del formulario, que al "submit" debe: 
+            A. Siempre para "submit" de <form llamar: e.preventDefault();
+            B. Obtenemos la data del <form, en un TDD Obj.
+            C. El Obj trae atributo id? determinante para hacer "PUT" || "POST" y el endpoint
+            D. hacemos fetch()
+              fetch(endpoint, {
+                method,
+                headers: { "Content-Type": "application/json" }, //generico
+                body: JSON.stringify(usuario), //!enviamos a la BBDD Obj con los campo/value
+              })
+            
+            ⭐form.addEventListener("submit", (e) => {})⭐ -> Manejadora del envio del <form
+
+
+       
+       
+       
+        4. Desarrollar esa function limpiarFormularioYActualizar() {}  ⌚👀
+                form.reset();
+                userId.value = "";
+                submitButton.value = "Enviar ➤";
+                titleForm.innerText = "LLENA LOS CAMPOS Y CREA UN USUARIO.";
+                fetchUsers();
+
+
+        4. "Reset"
+
+
+
+
+
+Indicaciones 24/06: Funcion manejadora "submit" y limpiarFormularioYActualizar().
+
+En la app usamos (btn.dataset.id && btn.dataset.nombre), para asignar 
+el id y nombre del usuario al actualizar o eliminar, al BTN oyente y este pueda 
+pasarselo a la funcion manajadora del evento.
+
+⭐Objeto dataset: 
+El dataset de un elemento HTML contiene solo los atributos (No nativos) que el programador
+haya establecido y que comienzan con data-. Por ejemplo:
+
+HTML
+<button data-id="123" data-nombre="Juan" data-valor-extra="abc">Click</button>
+En JavaScript, accedes a esos atributos así:
+
+JS
+const btn = document.querySelector('button');
+console.log(btn.dataset.id);           // "123"
+console.log(btn.dataset.nombre);       // "Juan"
+console.log(btn.dataset.valorExtra);   // "abc"
+Detalles importantes:
+
+Nota: Los atributos data- se transforman a propiedades camelCase en dataset.
+Por ejemplo:
+data-valor-extra → dataset.valorExtra
+data-user-id → dataset.userId
+
+Solo los atributos que empiezan con data- aparecen en dataset.
+No puedes acceder a otros atributos (como class, id, name) desde dataset.
+
+Nota: data atributos y atributos con el mismo nombre.
+btn.id te devolverá el valor del atributo id, en este caso: "23".
+btn.dataset.id te devolverá el valor del atributo data-id, en este caso: "123".
+Explicación:
+El atributo id es una propiedad estándar del elemento DOM y se accede directamente con element.id.
+Los atributos personalizados que comienzan con data- se acceden a través del objeto dataset, por ejemplo element.dataset.id para data-id.
+Aunque ambos atributos tengan nombres similares (id y data-id), son independientes y se acceden de forma diferente.
+
+
+⭐ cuando uso formData($Form)?
+1. para poblar input-valor del <form con la data campo-valor que viene de la BBDD, por "click" en btn Actualizar.
+2. para obtener todos los input-valor del form y enviarlos a la BBDD por "submit", al "POST" o "PUT"
+Nota: el input-name='id' del formData($Form), solo tiene valor si viene de la BBDD, 
+recuerda que existe el "campo===id". usarlo como bandera para "PUT".
+Si nosotros rellenamos del <form es para hacer "POST" y aun NO EXISTE EL ID, pues es creado automaticamente en la BBDD.
+
+ 
+⭐Metodos http: "POST" y "PUT"
+🧠recuerda el  "GET" y "DELETE"
+fetch('url') → Default "GET"
+fetch('url/id', → Obj de opciones → {method:"DELETE"})
+fetch('url', → Obj de opciones → {method:"POST", headers:{}, body: Data en TDD string})
+fetch('url/id', → Obj de opciones → {method:"PUT", headers:{}, body: Data en TDD string})
+
+🧠 utilizamos el input name="id", que tiene.
+
+
+stilo del body
+    <body class="bg-[linear-gradient(90deg,rgba(43,57,217,0.7)_0%,rgba(255,255,255,1)_13%,rgba(255,255,255,1)_51%,rgba(255,255,255,1)_66%,rgba(255,255,255,1)_90%,rgba(43,57,217,0.7)_100%)]">
+
+
+fetch(url)
+.then(res ok res.json())
+.(json => render(json))
+.catch(error => log(err))

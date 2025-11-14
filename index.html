@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀Con los chicos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #000;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+            }
+
+            @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+            } 
+    </style>
+</head>
+<!-- TODO: Agregar gradiente al body https://cssgradient.io/ -->
+
+<body 
+class="bg-[linear-gradient(90deg,rgba(43,57,217,0.7)_0%,rgba(255,255,255,1)_13%,rgba(255,255,255,1)_51%,rgba(255,255,255,1)_66%,rgba(255,255,255,1)_90%,rgba(43,57,217,0.7)_100%)]"
+>
+    <main>
+        
+        <div class="flex gap-5 justify-center items-center">
+            <h1 class="font-bold text-3xl text-center">🚀CRUD - Usuarios</h1>
+            <!-- <button id="btnDarkModeToggle" class="text-[50px]"> 🌙 </button> -->
+        </div>
+
+
+        <section class="flex flex-col xl:flex-row gap-5 justify-center items-center">
+           
+            <!--! TEMPLATE DEL FORM -->
+            <!--? https://tailwindflex.com/@lukas-muller/contact-us-page-template -->
+            <div class="h-screen w-full mx-auto xl:w-[40%]">
+                <div class="py-6 m-8 flex flex-col justify-center sm:py-12">
+                    <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-700 to-purple-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
+                        </div>
+                        <div class="text-white relative px-4 py-10 bg-indigo-400 shadow-lg sm:rounded-3xl sm:p-20">
+
+                            <div class="text-center pb-6">
+                                <!--TODO: cambiar el contendio -->
+                                <h2 class="font-bold text-2xl text-center">Formulario de Usuarios</h2>
+
+                                <!--TODO: Agregar id="titleForm" y cambiar el contendio -->
+                                <p id="titleForm" class="text-gray-300">
+                                    LLENA LOS CAMPOS Y CREA UN USUARIO.
+                                </p>
+                            </div>
+                            <!--TODO: 5 inpus (Nombre, Edad, Aceptacion, Email, URL de la img), en una <div 2 radio (hombre || mujer), 
+                           ✅ 2 buttons  ❌quitar textArea-->
+                            <!-- darle id al form y a cada input  -->
+                            <form id="form">
+                                <!--? El input hidden "name===id", formara parte del formData($Form), porque tiene Attb "name". 
+                                 <!--? al POST existira pero sera vacio, porque usario no lo llena, es un input oculto. 
+                                 <!--? al UPDATE trae el valor del "campo===id" del user en la BD, previamente asignado en el bnt ""-->
+                                  <input type="hidden" name="id" />
+                                <input
+                                    class="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    type="text" placeholder="Nombre" name="nombre" id="nombre" required>
+                        
+                                <input
+                                    class="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    type="number" placeholder="Edad" name="edad" id="edad">
+                                <input
+                                    class="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    type="number" placeholder="Indique % de Aceptacion" name="aceptacion" id="aceptacion">
+                                <input
+                                    class="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    type="email" placeholder="Email" name="email" id="email">
+                                <input
+                                    class="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    type="text" placeholder="Url de la img" name="foto" id="foto" required>
+                               
+                                
+                                      <!--&: AGREGAR ESTA DIV DE LOS RADIOS -->
+                                        <div class="p-4">
+                                            <p class="text-lg font-semibold mb-2">Cual es tu genero</p>
+                                            <div class="flex items-center mb-4">
+                                                <input type="radio" id="mujer" name="genero" value="true" class="mr-2">
+                                                <label for="mujer">Mujer</label>
+                                            </div>
+
+                                            <div class="flex items-center mb-4">
+                                                <input type="radio" id="hombre" name="genero" value="false" class="mr-2">
+                                                <label for="hombre">Hombre</label>
+                                            </div>
+                                            <!--? SON 2 inputs type=radio QUE TIENEN EL MISMO name="genero", sera nuestro selector para capturar su valor -->
+                                        </div>
+                                
+                                        <!--& LOS BOTONES -->
+                                        <div class="flex justify-between">
+                                        <!--TODO: Agregar id="btnSubmit" y cambiar el contendio: Enviar -->
+                                            <input
+                                                id="btnSubmit" 
+                                                value="Enviar ➤" 
+                                                class="shadow bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                type="submit" 
+                                            >
+                                            <input
+                                                class="shadow bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                type="reset">
+                                        </div>
+
+                            </form>
+                        
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--! TEMPLATE DE LA TABLA -->
+            <!--? https://tailwindflex.com/@sophia-baker/table-with-progress-column -->
+            <!-- flex-1: ancho flexible de todo el espacio restante no usado por los otros elementos."crece" y llena el espacio restante-->
+            <!--TODO: gran div table, solo estas class -->
+            <div class="h-screen w-full mx-auto xl:flex-1">
+
+                <!--? Poner las lables reales en <th de la <thead (Foto, Nombre, Edad, Genero, Email, Aceptación %, Acciones) -->       
+                    <!--TODO: Agregar a <table mt-[150px] xl:mt-8 w-[90%] border mx-auto -->
+                    <table class=" mt-[150px] xl:mt-8 w-[90%] border mx-auto   items-center w-full bg-transparent border-collapse">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                    Foto
+                                </th>
+                                <th
+                                    class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                    Nombre
+                                </th>
+                                <th
+                                    class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                    Edad
+                                </th>
+                                <th
+                                    class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                    Genero
+                                </th>
+                                <th
+                                    class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                    Email
+                                </th>
+                                <th
+                                    class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                    Aceptación %
+                                </th>
+                                <th
+                                    class="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-xs font-semibold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                                    Acciones
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        
+                        <!--? vaciar el cuerpo de la tabla y darle  id="tbody". -->
+                        <tbody class="divide-y divide-gray-100" id="tbody">
+                            <!--! LLENADO DINAMICO CON JS-->
+                            <!--! LOADER QUE DEBE DESAPARECER POR DATA -->
+                            <tr id="trLoader">
+                               <td  class="text-center" colspan="7">
+                                <span class="loader"></span>   <!--? EL LOADRE!!: https://cssloaders.github.io/ . -->
+                               </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+              
+            </div>
+
+
+        </section>
+
+    </main>
+
+    <script src="./script.js"></script>
+    <!-- <script src="./scriptDos.js"></script> -->
+    <!-- <script src="./fetch.js"></script> -->
+</body>
+</html>
