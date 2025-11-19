@@ -79,7 +79,6 @@ function renderizaTabla(usuarios){
     })
 }
 
-
 //*FUNCION QUE DESARROLLA EL MANEJA EL EVENTO "CLICK" SOBRE EL BTN "Editar"
 function editUser(id){
     titleForm.textContent = "LLENA LOS CAMPOS Y EDITA UN USUARIO."
@@ -109,8 +108,6 @@ function editUser(id){
 }
 
 
-
-
 //*FUNCION QUE DESARROLLA EL MANEJA EL EVENTO "CLICK" SOBRE EL BTN "Eliminar"
 function deleteUser(id){
     //  fetch(`${URL_API}/${id}`, {headers, body, method})
@@ -137,10 +134,59 @@ function limpiaFormularioYActualiza(){
 //*FUNCION QUE DESARROLLA EL MANEJA EL EVENTO "SUBMIT" SOBRE EL BTN "Enviar"/"Editar"
 form.addEventListener('submit', (e) =>{
     e.preventDefault()
+     const dataForm = new FormData(form)
+     let data = Object.fromEntries(dataForm.entries()) //Casting de FormData → Obj JS
+
+     if(!data.nombre || !data.edad || !data.aceptacion || !data.genero|| !data.foto)
+        alert('Todos los campos son requeridos')
+     if(data.id === '') delete data.id //*eliminamos el id del obj data con el operador "delete", porq es un post.
+
+     //*Confoguracion del metodo y url, dependiendo de existencia del id
+     let method = data.id ? 'PUT' : 'POST'
+     let url = data.id ? `${URL_API}/${data.id}` : URL_API
+     let body = JSON.stringify(data)
+     let headers = {'Content-Type':'application/json'}
+     
+     fetch(url, {method, headers, body})
+        .then(res =>{
+            if(res.ok) limpiaFormularioYActualiza()
+            else throw new Error(`❌❌ERROR AL HACER ${data.id ? 'ACTUALIZAR' : 'POST'} DEL USUARIO: Status ${res.status}, ${res.statusText}`);   
+        })
+            .catch(err =>{
+                 console.log(`❌Error al EDITAR/POST el usuario`)
+                alert(`❌Error al EDITAR/POST el usuario`)
+            })
+
 })
 
 fetchUsers() //TODO: PROBAR LO REALIZADO ULTMA CLASE
 
+
+const btnDarkModeToggle = document.getElementById('btnDarkModeToggle')
+const main = document.querySelector('main')
+const html = document.documentElement
+
+let currentMode = localStorage.getItem('theme') || 'light'
+
+applyTheme(currentMode)
+
+function applyTheme (mode) {
+    if(mode === 'dark') {
+        main.classList.add('bg-black', 'text-white')
+        btnDarkModeToggle.textContent = "☀️"
+        html.style.backgroundColor = '#121212'
+    } else{
+        main.classList.remove('bg-black', 'text-white')
+        btnDarkModeToggle.textContent = "🌙"
+        html.style.backgroundColor = 'transparent'
+    }
+    localStorage.setItem('theme', mode) 
+}
+
+btnDarkModeToggle.addEventListener('click', () =>{
+    currentMode = (currentMode === 'dark') ? "light" : 'dark'
+    applyTheme(currentMode)
+})
 
 
 
